@@ -67,3 +67,8 @@ A more in-depth description of usage. Any template arguments? A complicated exam
 * Confluence link:
 * Asana board:
 * etc...
+
+
+
+https://open-foundry.com/fonts/tex-gyre-heros
+https://fonts.google.com/specimen/Nunito
