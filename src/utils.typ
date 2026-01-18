@@ -1,4 +1,5 @@
 #import "styling/tokens.typ": tokens
+#import "@preview/datify:1.0.0": *
 
 // See https://github.com/typst/typst/issues/2953
 #let show_if_heading_within_distance(
@@ -55,9 +56,9 @@
   return none
 }
 
-#let today() = {
+#let today() = context {
   let current-date = datetime.today()
-  current-date.display("[day padding:none] [month repr:long] [year]")
+  [#custom-date-format(current-date, pattern: "long", lang: text.lang)]
 }
 
 #let centered(title, content) = {
@@ -70,14 +71,35 @@
   ]
 }
 
-#let get-pronoun-verb(subjects) = {
-  let pronoun = "I"
-  let verb = "am"
 
-  if (subjects.len() > 1) {
-    pronoun = "We"
-    verb = "are"
+#let deep-merge(base, override) = {
+  let result = (:)
+
+  // Copy all keys from base
+  for (key, value) in base {
+    result.insert(key, value)
   }
 
-  return (pronoun: pronoun, verb: verb)
+  // Apply overrides
+  for (key, value) in override {
+    // Skip empty arrays - keep the base value
+    if type(value) == array and value.len() == 0 {
+      continue
+    }
+
+    if key in base and type(value) == dictionary and type(base.at(key)) == dictionary {
+      result.insert(key, deep-merge(base.at(key), value))
+    } else {
+      result.insert(key, value)
+    }
+  }
+
+  result
+}
+
+#let title-case(string) = {
+  return str(string).replace(
+    regex("[A-Za-z]+('[A-Za-z]+)?"),
+    word => upper(word.text.first()) + lower(word.text.slice(1)),
+  )
 }

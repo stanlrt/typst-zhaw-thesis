@@ -1,4 +1,4 @@
-#import "utils.typ": *
+#import "utils.typ": deep-merge
 #import "styling/tokens.typ": tokens
 #import "pages/title.typ": title-page
 #import "pages/abstract.typ": abstract-page
@@ -14,31 +14,36 @@
 #import "translations.typ": setup-language
 
 #let zhaw-thesis(
-  school: "Engineering",
-  institute-short: "IniT",
-  institute: "Computer Science",
-  research-group: "Software Engineering",
-  work-type: "Bachelor project",
-  title: "LLM agents for functional suitability testing of vibe-coded web-apps",
-  authors: ("Stanislas Laurent", "Jonathan Durner"),
-  supervisors: ("Prof. Dr. Marcela Ruiz",),
-  study-program: "Computer Science B.Sc.",
-  abstract: "TODO",
-  keywords: ("TODO", "TODO"),
-  acknowledgements: "We sincerely thank Prof. Dr. Marcela Ruiz for her expertise in requirements engineering and no-code solutions. Her guidance and support was invaluable to the successful completion of this project.",
+  school: none,
+  institute-short: none,
+  institute: none,
+  work-type: none,
+  title: none,
+  authors: none,
+  supervisors: none,
+  study-program: none,
+  abstract: none,
+  keywords: none,
+  acknowledgements: none,
   declaration-of-originality: none,
-  location: "Zürich",
+  location: none,
   page-border: true,
-  language: "en",
+  language: "de",
   glossary-entries: none,
-  override: (
+  override: (:),
+  bibliography-file: none,
+  appendix: none,
+  doc,
+) = {
+  let defaults = (
     title-page: false,
     abstract-page: false,
     declaration-page: false,
     acknowledgements-page: false,
-  ),
-  doc,
-) = {
+  )
+  let override = deep-merge(defaults, override)
+
+
   set enum(numbering: "1.i.1.i.")
 
   show: setup-language.with(language)
@@ -118,6 +123,22 @@
     doc
 
     styled-glossary
+
+    bibliography(
+      bibliography-file,
+      style: "institute-of-electrical-and-electronics-engineers",
+    )
+
+    if appendix != none {
+      set heading(numbering: none, supplement: [Appendix])
+      counter(heading).update(1)
+
+      [= Appendix<appendix>]
+
+      set heading(numbering: "1.1.1")
+
+      appendix
+    }
   }
 }
 

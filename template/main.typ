@@ -1,26 +1,25 @@
 #import "../src/lib.typ": *
-
-#let paGlossary = (
-  "deployment": (
-    long: "deploy",
-    short: "deployment",
-    description: [Software deployment encompasses all the activities that make a software system available for use, including installation, configuration, running, testing, and making necessary adjustments. Think of deployment as the bridge between your development team and your users.],
-    group: "Terms",
-  ),
-  "ISO": (
-    short: "ISO",
-    long: "International Organisation for Standardisation",
-    description: [ISO is an independent, non-governmental international organisation. It brings global experts together to agree on the best ways of doing things. From quality management to AI, our mission is to make lives easier, safer and better – for everyone, everywhere.],
-    group: "Acronyms",
-  ),
-)
+#import "glossary.typ": myGlossary
 
 #show: zhaw-thesis.with(
   language: "de",
-  glossary-entries: paGlossary,
-  //   override: (
-  //     title-page: none,
-  //   ),
+  school: "Engineering",
+  institute-short: "IniT",
+  institute: "Computer Science",
+  work-type: "Bachelor project",
+  title: "Title",
+  authors: ("Alice", "Bob"),
+  supervisors: ("Prof. Dr. Charlie", "Dr. David"),
+  study-program: "Computer Science B.Sc.",
+  abstract: lorem(40),
+  keywords: ("computer", "software"),
+  location: "Zürich",
+  glossary-entries: myGlossary,
+  bibliography-file: "/template/biblio.bib",
+  appendix: [#include "appendix.typ"],
+  override: (
+    abstract-page: "jdjdjjd",
+  ),
 )
 
 = Introduction
@@ -46,6 +45,8 @@
 $
   x times y = z
 $
+
+@xu_first_2024
 
 #figure(
   table(

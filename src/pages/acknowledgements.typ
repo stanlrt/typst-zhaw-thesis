@@ -1,19 +1,21 @@
 #import "../styling/tokens.typ": tokens
-#import "../utils.typ": centered, get-pronoun-verb
+#import "../utils.typ": centered
+#import "@preview/tieflang:0.1.0": tr
 
 #let acknowledgements-page(
   acknowledgements: none,
   supervisors: none,
   authors: none,
 ) = {
-  let supervisors = supervisors.join(", ", last: " and ")
-  show: doc => centered("Acknowledgements", doc)
+  let supervisors = supervisors.join(", ", last: " " + tr().and + " ")
+  show: doc => centered(tr().acknowledgements.title, doc)
 
   if acknowledgements != none [
 
     #acknowledgements
   ] else [
+    #let plural = authors.len() > 1
 
-    #get-pronoun-verb(authors).pronoun sincerely thank #supervisors for their expertise and continuous advice. Their guidance and support was invaluable to the successful completion of this project.
+    #(tr().acknowledgements.text)(plural, supervisors)
   ]
 }
