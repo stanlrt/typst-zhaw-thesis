@@ -32,6 +32,7 @@
   glossary-entries: none,
   override: (:),
   bibliography-file: none,
+  bibliography-style: "ieee",
   appendix: none,
   doc,
 ) = {
@@ -47,7 +48,7 @@
   set enum(numbering: "1.i.1.i.")
 
   show: setup-language.with(language)
-  show: init-glossary.with(glossary-entries, term-links: true)
+  show: init-glossary.with(glossary-entries, term-links: false)
 
 
   show outline.entry.where(
@@ -126,7 +127,7 @@
 
     bibliography(
       bibliography-file,
-      style: "institute-of-electrical-and-electronics-engineers",
+      style: bibliography-style,
     )
 
     if appendix != none {

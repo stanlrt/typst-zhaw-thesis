@@ -7,6 +7,7 @@
   supervisors: none,
   authors: none,
 ) = {
+  let supervisor-count = supervisors.len()
   let supervisors = supervisors.join(", ", last: " " + tr().and + " ")
   show: doc => centered(tr().acknowledgements.title, doc)
 
@@ -16,6 +17,6 @@
   ] else [
     #let plural = authors.len() > 1
 
-    #(tr().acknowledgements.text)(plural, supervisors)
+    #(tr().acknowledgements.text)(plural, supervisor-count, supervisors)
   ]
 }

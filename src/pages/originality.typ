@@ -7,13 +7,6 @@
   location: none,
   authors: none,
 ) = {
-  set page(margin: tokens.margin)
-
-  set text(
-    size: tokens.font-sizes.body,
-    lang: "en",
-    region: "gb",
-  )
   show: doc => centered(tr().declaration_of_originality.title, doc)
 
   if (declaration_of_originality != none) [

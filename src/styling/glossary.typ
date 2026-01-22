@@ -2,12 +2,12 @@
 
 #let glossary-theme = (
   section: (title, body) => {
-    heading(level: 1)[#title]
+    heading(level: 1, numbering: none)[#title]
     body
   },
   group: (name, index, total, body) => {
     if name != "" and total > 1 {
-      heading(level: 2)[#name]
+      heading(level: 2, numbering: none)[#name]
     }
     body
   },
