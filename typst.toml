@@ -3,7 +3,7 @@
 [package]
 name = "zhaw-thesis"
 version = "0.1.0"
-entrypoint = "src/lib.typ"
+entrypoint = "lib.typ"
 authors = ["Stanislas Laurent <https://github.com/stanlrt>"]
 license = "MIT-0"
 description = "An unofficial template for ZHAW academic works, adaped from the official branding"
@@ -18,14 +18,13 @@ exclude = [
   "tests",
   ".typstignore",
   "Justfile",
-  "thumbnail-dark.svg",
-  "thumbnail-light.svg",
+  "thumbnail.png",
 ]
 
 [template]
 path = "template/" # all files inside will be copied into the user's new project directory
 entrypoint = "main.typ" # compilation target
-thumbnail = "thumbnails/thumb.png"
+thumbnail = "thumbnail.png"
 
 # [tool.mytool]
 # foo = "bar"

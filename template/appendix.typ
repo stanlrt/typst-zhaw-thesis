@@ -1,4 +1,4 @@
-== AI Usage Declaration <ai>
+== AI Usage Declaration <appendix:ai>
 
 During the preparation of this thesis, AI tools were used for the following purposes:
 

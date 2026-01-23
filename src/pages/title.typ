@@ -10,10 +10,15 @@
   title: none,
   authors: none,
   supervisors: none,
+  co-supervisors: none,
 ) = {
   set page(fill: tokens.colour.main, margin: 1cm, background: none)
   set par(leading: 0.8em)
   set text(fill: white, weight: "bold", font: tokens.font-families.headers)
+
+  let authors = ensure-array(authors)
+  let supervisors = ensure-array(supervisors)
+  let co-supervisors = ensure-array(co-supervisors)
 
   let logo = (
     image("../assets/zhaw_logo.png"),
@@ -33,11 +38,8 @@
 
   let info() = {
     set par(justify: false)
-    grid(
-      columns: (25%, 25%, 25%),
-      rows: (auto, 1cm),
-      column-gutter: 1cm,
-      inset: (left: optical_alignment),
+
+    let info-items = (
       block[
         #tr().authors:\
         #text(font: tokens.font-families.body, weight: "regular", authors.join(linebreak()))
@@ -46,10 +48,33 @@
         #tr().supervisors:\
         #text(font: tokens.font-families.body, weight: "regular", supervisors.join(linebreak())) \
       ],
+    )
+
+    if co-supervisors != none {
+      info-items.push(
+        align(start + top)[
+          #tr().co_supervisors:\
+          #text(font: tokens.font-families.body, weight: "regular", co-supervisors.join(linebreak())) \
+        ],
+      )
+    }
+
+    info-items.push(
       align(start + top)[
         #tr().submitted_on:\
         #text(font: tokens.font-families.body, weight: "regular", today())
       ],
+    )
+
+    let columns = if co-supervisors != none { (auto, auto, auto, auto) } else { (auto, auto, auto) }
+    let gutter = if co-supervisors != none { 0cm } else { 2cm }
+
+    grid(
+      columns: columns,
+      rows: (auto, 1cm),
+      column-gutter: gutter,
+      inset: (left: optical_alignment),
+      ..info-items,
     )
   }
 

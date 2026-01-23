@@ -1,31 +1,34 @@
-#import "/src/lib.typ": * //TODO: Change to @preview/zhaw-thesis:0.1.0 when published
+#import "/lib.typ": * //TODO: Change to @preview/zhaw-thesis:0.1.0 when published
 #import "glossary.typ": myGlossary
 
 #show: zhaw-thesis.with(
-  language: "de",
-  school: "Engineering",
-  institute-short: "IniT",
-  institute: "Computer Science",
-  work-type: "Bachelor thesis",
-  title: "Machine Learning-Based Anomaly Detection in Distributed Systems: A Comparative Analysis",
-  authors: ("Alice Müller", "Bob Schmidt"),
-  supervisors: ("Prof. Dr. Charlie Meier",),
-  study-program: "Computer Science B.Sc.",
-  abstract: [
-    This thesis investigates the application of machine learning techniques for detecting anomalies in distributed systems. We compare three different approaches: supervised learning using neural networks, unsupervised clustering with k-means, and hybrid methods combining both paradigms. Our experimental results demonstrate that the hybrid approach achieves a 23% improvement in detection accuracy compared to traditional threshold-based methods, while maintaining low false-positive rates. The system was evaluated using real-world data from production environments, showing its practical applicability for monitoring critical infrastructure.
-  ],
-  keywords: ("machine learning", "anomaly detection", "distributed systems", "neural networks"),
-  location: "Zürich",
-  glossary-entries: myGlossary,
-  bibliography-file: "/template/biblio.bib",
-  bibliography-style: "ieee",
-  appendix: [#include "appendix.typ"],
-  override: (
-    abstract-page: "jdjdjjd",
+  language: languages.en,
+  cover: (
+    school: "Engineering",
+    institute: "Computer Science",
+    work-type: "Bachelor thesis",
+    title: "ZHAW Thesis Template",
+    authors: ("Alice Müller", "Bob Schmidt"),
+    supervisors: ("Prof. Dr. Charlie Meier",),
+    study-program: "Computer Science B.Sc.",
   ),
+  abstract: (
+    keywords: ("template", "typst", "zhaw", "thesis"),
+    de: "Diese Vorlage dient als Demonstration der Funktionen von Typst und der Struktur einer Abschlussarbeit an der ZHAW. Sie umfasst Beispiele für Querverweise, ein Glossar, ein Literaturverzeichnis, mathematische Gleichungen und Codeausschnitte.",
+    en: "This template serves as a demonstration of Typst features and the structure of a thesis at ZHAW. It includes examples of cross-references, a glossary, bibliography, mathematical equations, and code snippets.",
+  ),
+  declaration-of-originality: (
+    location: "Zürich",
+  ),
+  glossary-entries: myGlossary,
+  biblio: (
+    file-path: "/template/biblio.bib",
+    style: "ieee",
+  ),
+  appendix: [#include "appendix.typ"],
 )
 
-// Below is where you can write your thesis. It's recommended to create separate files for each chapter and include them here using #include "path/to/chapter.typ".
+// Below you can write your thesis. It's recommended to create separate files for each chapter and include them here using #include "path/to/chapter.typ".
 
 = Introduction <intro>
 
@@ -38,9 +41,9 @@ This document serves as a demo of both Typst features and the template itself.
 == Is Typst better than Latex?
 
 That's subjective, but:
-- it compiles much faster and provides real-time preview
+- it compiles much faster and provides real-time preview (no compilation delays)
 - its syntax is much nicer to write and look at
-- it has built-in support for features that require packages in LaTeX (like bibliography, cross-references, glossary, code listings, etc.)
+- it has built-in support for features that require packages in LaTeX (bibliography, cross-references, glossary, code snippets, etc.)
 - its web editor works better than Overleaf
 
 = Features showcase <features>
@@ -123,7 +126,7 @@ Figures allow to wrap images, tables, code snippets, and more in captions and la
   caption: "Sample code demonstrating syntax highlighting and professional formatting",
 ) <code:detection>
 
-#coloured-box(
+#callout(
   "In summary",
 )[
   This template showcases:

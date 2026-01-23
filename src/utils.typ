@@ -61,6 +61,14 @@
   [#custom-date-format(current-date, pattern: "long", lang: text.lang)]
 }
 
+#let ensure-array(unsafe-input) = {
+  if unsafe-input != none and type(unsafe-input) != array {
+    (unsafe-input,)
+  } else {
+    unsafe-input
+  }
+}
+
 #let centered(title, content) = {
   pagebreak()
   set align(center + horizon)

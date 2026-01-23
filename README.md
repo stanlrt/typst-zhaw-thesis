@@ -1,7 +1,66 @@
-# The `my-package` Package
+# The `zhaw-thesis` Package
 <div align="center">Version 0.1.0</div>
 
-A short description about the project and/or client.
+An unofficial template for ZHAW academic works, adaped from the official branding.
+
+## Setup
+
+### Web-app (easiest)
+
+1. Create a project from https://typst.app/universe/package/zhaw-thesis
+2. Download the font files in the repo's font directory.
+3. Drag and drop the files into the webapp's file panel on the left (you can create a font folder)
+
+### Local
+
+1. Install Typst from https://typst.app/open-source/
+3. Download the font files ftom this repo's font directory and make them accessible to the compiler (https://typst.app/docs/reference/text/text/#parameters-font)
+4. Run `typst init @preview/zhaw-thesis:0.1.0` in your project directory
+
+## Configuration
+
+Below is the complete list of configuration options, inclueing default values and explanations. Most are optional.
+
+```typ
+#import "@preview/zhaw-thesis:0.1.0": *
+#import "glossary.typ": myGlossary
+
+#show: zhaw-thesis.with(
+  language: languages.de,         // Document language 
+  cover: (                       
+    school: none,                 // E.g., "School of Engineering" REQUIRED
+    institute: none,              // E.g., "Computer Science" REQUIRED
+    work-type: none,              // E.g., "Bachelor Thesis" REQUIRED
+    title: none,                  // Work's title REQUIRED
+    authors: none,                // Author name(s), e.g. ("Max Mustermann", "Erika Musterfrau") REQUIRED
+    supervisors: none,            // Supervisor name(s), e.g. ("Prof. Dr. John Doe", "Dr. Jane Doe")
+    study-program: none,          // E.g., "Computer Science BSc"
+    override: none,               // Override cover page with your own file, e.g. [#include: "my-cover.typ"]
+  ),
+  abstract: (
+    keywords: none,               // List of keywords, e.g. ("Typst", "ZHAW", "Thesis Template") REQUIRED
+    en: none,                     // English abstract text
+    de: none,                     // German abstract text. REQUIRED by ZHAW even when language is English.
+    override: none,               // Override abstract page with your own file, e.g. [#include: "my-abstract.typ"]
+  ),
+  acknowledgements: (
+    text: none,                   // Custom acknowledgements text
+    override: none,               // Override acknowledgements page with your own file, e.g. [#include: "my-acknowledgements.typ"]
+  ),
+  declaration-of-originality: (
+    location: none,               // E.g., "Zurich" REQUIRED
+    text: none,                   // Custom declaration text
+    override: none,               // Override declaration page with your own file, e.g. [#include: "my-declaration.typ"]
+  ),
+  glossary-entries: none,         // Variable containing glossary entries, e.g., myGlossary
+  biblio: (
+    file-path: none,              // Path to your .bib file, e.g., "references.bib"
+    style: "ieee",                // Bibliography style, e.g., "ieee", "apa", etc.
+  ),
+  appendix: none,                 // Content for the appendix, e.g., [#include: "appendix.typ"]
+  page-border: true,              // Enable/disable page border
+)
+```
 
 ## Template adaptation checklist
 
@@ -24,56 +83,3 @@ A short description about the project and/or client.
 - [ ] remove/replace the example test case
 - [ ] (add your actual code, docs and tests)
 - [ ] remove this section from the README
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on the typst web app. Perhaps a short code example on importing the package and a very simple teaser usage.
-
-```typ
-#import "@preview/my-package:0.1.0": *
-
-#show: my-show-rule.with()
-#my-func()
-```
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./thumbnail-dark.svg">
-  <img src="./thumbnail-light.svg">
-</picture>
-
-### Installation
-
-A step by step guide that will tell you how to get the development environment up and running. This should explain how to clone the repo and where to (maybe a link to the typst documentation on it), along with any pre-requisite software and installation steps.
-
-```
-$ First step
-$ Another step
-$ Final step
-```
-
-## Usage
-
-A more in-depth description of usage. Any template arguments? A complicated example that showcases most if not all of the functions the package provides? This is also an excellent place to signpost the manual.
-
-```typ
-#import "@preview/my-package:0.1.0": *
-
-#let my-complicated-example = ...
-```
-
-## Additional Documentation and Acknowledgments
-
-* Project folder on server:
-* Confluence link:
-* Asana board:
-* etc...
-
-fonts
-
-https://open-foundry.com/fonts/tex-gyre-heros
-https://fonts.google.com/specimen/Nunito
-
-custom overrides
-
-multilanguage (2 abstracts)
-

@@ -1,6 +1,7 @@
 #import "../styling/tokens.typ": tokens
 #import "../utils.typ": centered, today
 #import "@preview/tieflang:0.1.0": tr
+#import "../utils.typ": ensure-array
 
 #let declaration-of-originality-page(
   declaration_of_originality: none,
@@ -8,6 +9,8 @@
   authors: none,
 ) = {
   show: doc => centered(tr().declaration_of_originality.title, doc)
+
+  let authors = ensure-array(authors)
 
   if (declaration_of_originality != none) [
 

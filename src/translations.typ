@@ -1,4 +1,4 @@
-#import "@preview/tieflang:0.1.0": configure-translations, push-lang, tr
+#import "@preview/tieflang:0.1.0": configure-translations, pop-lang, push-lang, tr
 #import "utils.typ": title-case
 
 #let translations = (
@@ -9,6 +9,7 @@
     authors: [Autoren],
     supervisor: [Betreuer],
     supervisors: [Betreuer],
+    co_supervisors: [Mitbetreuer],
     acknowledgements: (
       title: [Danksagung],
       text: (plural, supervisor-count, supervisors) => context {
@@ -66,6 +67,7 @@
     authors: [Authors],
     supervisor: [Supervisor],
     supervisors: [Supervisors],
+    co_supervisors: [Co-Supervisors],
     acknowledgements: (
       title: [Acknowledgements],
       text: (plural, supervisor-count, supervisors) => context {
@@ -94,7 +96,7 @@
 
           The #student #declare that all sources in the text (including Internet pages) and appendices have been correctly disclosed. This means that there has been no plagiarism, i.e. no sections of the project work have been partially or wholly taken from other texts and represented as the student's own work or included without being correctly referenced.
 
-          AI systems were used in the process of this work, as specified in @ai.
+          AI systems were used in the process of this work, as specified in @appendix:ai.
 
           Any misconduct will be dealt with according to paragraphs 39 and 40 of the General Academic Regulations for Bachelor's and Master's Degree courses at the Zurich University of Applied Sciences (Rahmenprüfungsordnung ZHAW (RPO)) and subject to the provisions for disciplinary action stipulated in the University regulations.
         ]

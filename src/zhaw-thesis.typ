@@ -11,39 +11,86 @@
 #import "styling/table.typ": table-styles
 #import "styling/page-header.typ": page-header-styles
 #import "styling/page-border.typ": page-border-styles
-#import "translations.typ": setup-language
+#import "translations.typ": languages, setup-language
 
 #let zhaw-thesis(
-  school: none,
-  institute-short: none,
-  institute: none,
-  work-type: none,
-  title: none,
-  authors: none,
-  supervisors: none,
-  study-program: none,
-  abstract: none,
-  keywords: none,
-  acknowledgements: none,
-  declaration-of-originality: none,
-  location: none,
-  page-border: true,
-  language: "de",
+  language: languages.de,
+  cover: (
+    school: none,
+    institute: none,
+    work-type: none,
+    title: none,
+    authors: none,
+    supervisors: none,
+    //    co-supervisors: none,
+    study-program: none,
+    override: none,
+  ),
+  abstract: (
+    keywords: none,
+    en: none,
+    de: none,
+    override: none,
+  ),
+  acknowledgements: (
+    text: none,
+    override: none,
+  ),
+  declaration-of-originality: (
+    location: none,
+    text: none,
+    override: none,
+  ),
   glossary-entries: none,
-  override: (:),
-  bibliography-file: none,
-  bibliography-style: "ieee",
+  biblio: (
+    file-path: none,
+    style: "ieee",
+  ),
   appendix: none,
+  page-border: true,
   doc,
 ) = {
-  let defaults = (
-    title-page: false,
-    abstract-page: false,
-    declaration-page: false,
-    acknowledgements-page: false,
+  // Apply deep-merge to nested structures with defaults
+  let cover-defaults = (
+    school: none,
+    institute: none,
+    work-type: none,
+    title: none,
+    authors: none,
+    supervisors: none,
+    co-supervisors: none,
+    study-program: none,
+    override: none,
   )
-  let override = deep-merge(defaults, override)
+  let cover = deep-merge(cover-defaults, cover)
 
+  let abstract-defaults = (
+    keywords: none,
+    en: none,
+    de: none,
+    override: none,
+  )
+  let abstract = deep-merge(abstract-defaults, abstract)
+
+  let acknowledgements-defaults = (
+    text: none,
+    override: none,
+  )
+  let acknowledgements = deep-merge(acknowledgements-defaults, acknowledgements)
+
+  let declaration-defaults = (
+    location: none,
+    text: none,
+    override: none,
+  )
+
+  let declaration-of-originality = deep-merge(declaration-defaults, declaration-of-originality)
+
+  let biblio-defaults = (
+    file-path: none,
+    style: "ieee",
+  )
+  let biblio = deep-merge(biblio-defaults, biblio)
 
   set enum(numbering: "1.i.1.i.")
 
@@ -69,51 +116,58 @@
 
   // context is neeeded for the tr() calls inside the page functions
   context {
-    if (override.title-page == false) {
+    if (cover.override == none) {
       title-page(
-        school: school,
-        institute: institute,
-        work_type: work-type,
-        title: title,
-        authors: authors,
-        supervisors: supervisors,
+        school: cover.school,
+        institute: cover.institute,
+        work_type: cover.work-type,
+        title: cover.title,
+        authors: cover.authors,
+        supervisors: cover.supervisors,
+        co-supervisors: cover.co-supervisors,
       )
     } else {
-      override.title-page
+      cover.override
     }
 
     set page(numbering: "i")
     counter(page).update(1)
 
-    if (override.abstract-page == false) {
+    if (abstract.override == none) {
+      if (abstract.de == none) {
+        panic("ZHAW requires a German abstract even for English works.")
+      }
+
       abstract-page(
-        abstract: abstract,
-        keywords: keywords,
-        authors: authors,
-        title: title,
+        en: abstract.en,
+        de: abstract.de,
+        keywords: abstract.keywords,
+        authors: cover.authors,
+        title: cover.title,
       )
     } else {
-      override.abstract-page
+      abstract.override
     }
 
-    if (override.acknowledgements-page == false) {
+    if (acknowledgements.override == none) {
       acknowledgements-page(
-        acknowledgements: acknowledgements,
-        supervisors: supervisors,
-        authors: authors,
+        acknowledgements: acknowledgements.text,
+        supervisors: cover.supervisors,
+        co-supervisors: cover.co-supervisors,
+        authors: cover.authors,
       )
     } else {
-      override.acknowledgements-page
+      acknowledgements.override
     }
 
-    if (override.declaration-page == false) {
+    if (declaration-of-originality.override == none) {
       declaration-of-originality-page(
-        declaration_of_originality: declaration-of-originality,
-        location: location,
-        authors: authors,
+        declaration_of_originality: declaration-of-originality.text,
+        location: declaration-of-originality.location,
+        authors: cover.authors,
       )
     } else {
-      override.declaration-page
+      declaration-of-originality.override
     }
 
     outline(title: "Table of Contents", depth: 3)
@@ -125,10 +179,12 @@
 
     styled-glossary
 
-    bibliography(
-      bibliography-file,
-      style: bibliography-style,
-    )
+    if biblio.file-path != none {
+      bibliography(
+        biblio.file-path,
+        style: biblio.style,
+      )
+    }
 
     if appendix != none {
       set heading(numbering: none, supplement: [Appendix])
@@ -146,7 +202,7 @@
 
 #import "@preview/colorful-boxes:1.4.3": *
 
-#let coloured-box(title, text) = colorbox(
+#let callout(title, text) = colorbox(
   title: title,
   color: (
     fill: tokens.colour.lightest,
