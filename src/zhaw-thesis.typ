@@ -43,7 +43,7 @@
   ),
   glossary-entries: none,
   biblio: (
-    file-path: none,
+    file: none,
     style: "ieee",
   ),
   appendix: none,
@@ -87,7 +87,7 @@
   let declaration-of-originality = deep-merge(declaration-defaults, declaration-of-originality)
 
   let biblio-defaults = (
-    file-path: none,
+    file: none,
     style: "ieee",
   )
   let biblio = deep-merge(biblio-defaults, biblio)
@@ -95,7 +95,7 @@
   set enum(numbering: "1.i.1.i.")
 
   show: setup-language.with(language)
-  show: init-glossary.with(glossary-entries, term-links: false)
+  show: init-glossary.with(glossary-entries, term-links: true)
 
 
   show outline.entry.where(
@@ -179,9 +179,9 @@
 
     styled-glossary
 
-    if biblio.file-path != none {
+    if biblio.file != none {
       bibliography(
-        biblio.file-path,
+        biblio.file,
         style: biblio.style,
       )
     }

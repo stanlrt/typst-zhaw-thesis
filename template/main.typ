@@ -1,4 +1,5 @@
 #import "../lib.typ": *
+// #import "@preview/zhaw-thesis:0.1.0": *
 #import "glossary.typ": myGlossary
 
 #show: zhaw-thesis.with(
@@ -22,7 +23,7 @@
   ),
   glossary-entries: myGlossary,
   biblio: (
-    file-path: "/template/biblio.bib",
+    file: read("biblio.bib", encoding: none),
     style: "ieee",
   ),
   appendix: [#include "appendix.typ"],
