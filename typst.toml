@@ -18,8 +18,8 @@ exclude = [
   "tests",
   ".typstignore",
   "Justfile",
-  "thumbnail.png",
   "showcase.pdf",
+  "fonts",
 ]
 
 [template]
