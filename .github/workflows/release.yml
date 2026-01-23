@@ -2,7 +2,6 @@ name: Package and push to registry repo
 on:
   push:
     tags: [ v* ]
-  workflow_dispatch:
 
 env:
   # the repository to which to push the release version
