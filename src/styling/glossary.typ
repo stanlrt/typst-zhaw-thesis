@@ -1,4 +1,4 @@
-#import "@preview/glossy:0.7.0": *
+#import "../patches/glossy/lib.typ": *
 
 #let glossary-theme = (
   section: (title, body) => {
@@ -23,7 +23,7 @@
     block(breakable: false)[
       #grid(
         columns: (auto, 1fr, auto),
-        label, h(1fr), entry.pages,
+        label, h(1fr), entry.pages.join(", "),
       )
       #v(-0.1cm)
       #description
