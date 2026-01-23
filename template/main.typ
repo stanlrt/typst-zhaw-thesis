@@ -1,4 +1,4 @@
-#import "/lib.typ": * //TODO: Change to @preview/zhaw-thesis:0.1.0 when published
+#import "@preview/zhaw-thesis:0.1.0": *
 #import "glossary.typ": myGlossary
 
 #show: zhaw-thesis.with(
