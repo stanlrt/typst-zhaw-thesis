@@ -6,4 +6,4 @@ This repositiory exists only to allow users to submit issues, and to store the r
 
 [Official package page](https://typst.app/universe/package/modern-zhaw-thesis)
 
-[Code](https://github.com/stanlrt/typst-packages-fork/blob/zhaw-thesis-0.1.0/packages/preview/zhaw-thesis).
+[Code](https://github.com/stanlrt/typst-packages-fork/tree/main/packages/preview/modern-zhaw-thesis)
