@@ -10,13 +10,13 @@
 
 1. Create a project from https://typst.app/universe/package/zhaw-thesis
 3. In the left sidebar, under "Files", create a folder called "fonts" 
-2. Download the font files in the [repo's font directory](https://github.com/stanlrt/typst-zhaw-thesis/tree/main/fonts)
+2. Download the font files from [this repo's font directory](https://github.com/stanlrt/typst-zhaw-thesis/tree/main/fonts)
 4. Drag and drop the files into the "font" directory in your web-app project
 
 ### Local
 
 1. Install Typst from https://typst.app/open-source/
-2. Download the font files ftom this repo's font directory and make them accessible to the compiler (https://typst.app/docs/reference/text/text/#parameters-font)
+2. Download the font files from [this repo's font directory](https://github.com/stanlrt/typst-zhaw-thesis/tree/main/fonts) and make them accessible to the compiler (https://typst.app/docs/reference/text/text/#parameters-font)
 3. Run `typst init @preview/zhaw-thesis:0.1.0` in your project directory
 
 ## Configuration options
