@@ -64,17 +64,7 @@ jobs:
           cd typst-packages
           git config user.name "${GIT_USER_NAME}"
           git config user.email "${GIT_USER_EMAIL}"
-          
-          # Fetch to check if branch exists
-          git fetch origin "${PKG_NAME}-${PKG_VERSION}" || true
-          
-          # Checkout existing branch or create new one
-          if git show-ref --verify --quiet "refs/remotes/origin/${PKG_NAME}-${PKG_VERSION}"; then
-            git checkout "${PKG_NAME}-${PKG_VERSION}"
-          else
-            git checkout -b "${PKG_NAME}-${PKG_VERSION}"
-          fi
-          
+          git checkout -b "${PKG_NAME}-${PKG_VERSION}"
           git add .
           git commit -m "${PKG_NAME}:${PKG_VERSION}"
-          git push --force-with-lease --set-upstream origin "${PKG_NAME}-${PKG_VERSION}"
+          git push --set-upstream origin "${PKG_NAME}-${PKG_VERSION}"
