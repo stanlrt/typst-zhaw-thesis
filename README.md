@@ -1,6 +1,6 @@
 # `zhaw-thesis` template
 
-`zhaw-thesis` is an unofficial template for ZHAW academic works, adaped from the official branding, and followoing all official guidelines and requirements.
+`zhaw-thesis` is an unofficial template for ZHAW academic works, adapted from the official branding and following official requirements. It supports both English and German.
 
 [Here's a showcase](https://github.com/stanlrt/typst-zhaw-thesis/blob/main/showcase.pdf) of how it looks like.
 
@@ -24,7 +24,7 @@
 Below is the complete list of configuration options, inclueing default values and explanations. Most are optional.
 
 ```typ
-#import "@preview/zhaw-thesis:0.1.0": *
+#import "@preview/zhaw-thesis:0.1.0": zhaw-thesis, languages
 #import "glossary.typ": myGlossary
 
 #show: zhaw-thesis.with(
@@ -54,7 +54,7 @@ Below is the complete list of configuration options, inclueing default values an
     text: none,                   // Custom declaration text
     override: none,               // Override declaration page with your own file, e.g. [#include: "my-declaration.typ"]
   ),
-  glossary-entries: none,         // Variable containing glossary entries, e.g., myGlossary
+  glossary-entries: none,         // Variable containing glossary entries, e.g., myGlossary (see template)
   biblio: (
     file: none,                   // Stream to your .bib file, e.g., read("references.bib", encoding: none)
     style: "ieee",                // Bibliography style, e.g., "ieee", "apa", etc.
