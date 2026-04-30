@@ -7,7 +7,11 @@
 <br/>
 <br/>
 
-`modern-zhaw-thesis` is an unofficial template for ZHAW academic works, adapted from the official branding and following official requirements. It supports both English and German.
+`modern-zhaw-thesis` is a comprehensive template for ZHAW academic works (theses, exercises, reports…), adapted from the official branding and following official requirements. It supports both English and German.
+
+[Here’s a showcase](https://github.com/typst/packages/raw/main/packages/preview/modern-zhaw-thesis/0.4.0/showcase.pdf) of how it looks like.
+
+---
 
 This repositiory exists only to allow users to submit issues, and to store the required font files. 
 
