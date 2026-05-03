@@ -19,4 +19,6 @@ This repositiory exists only to allow users to submit issues, and to store the r
 
 [Code](https://github.com/stanlrt/typst-packages-fork/tree/main/packages/preview/modern-zhaw-thesis)
 
-<img width="1116" height="1578" alt="image" src="https://github.com/user-attachments/assets/02c2bd3d-7f23-422d-ba73-7abf37bee0cf" />
+---
+
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/02c2bd3d-7f23-422d-ba73-7abf37bee0cf" />
