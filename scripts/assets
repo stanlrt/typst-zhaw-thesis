@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Generates thumbnail.png (Typst Universe requirement) and showcase.pdf.
+. "$(dirname "${BASH_SOURCE[0]}")/common"
+
+compile_template "$PKG_DIR/showcase.pdf"
+compile_template "$PKG_DIR/thumbnail.png" --format png --pages 1 --ppi 250
+if command -v oxipng >/dev/null; then oxipng -q -o 4 --strip safe "$PKG_DIR/thumbnail.png"; fi
+echo "generated package/showcase.pdf and package/thumbnail.png"

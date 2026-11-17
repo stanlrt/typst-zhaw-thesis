@@ -13,11 +13,20 @@
 
 ---
 
-This repositiory exists only to allow users to submit issues, and to store the required font files. 
+This repository holds the template's source code (in [`package/`](package)), the [font files](fonts) you need to install, and the issue tracker.
 
 👉 **Install it here:** [Official package page](https://typst.app/universe/package/modern-zhaw-thesis)
 
-[Code](https://github.com/stanlrt/typst-packages-fork/tree/main/packages/preview/modern-zhaw-thesis)
+## Development
+
+Requires [Typst](https://typst.app/open-source/) and [just](https://github.com/casey/just).
+
+- `just check`: check that version numbers agree across the package
+- `just test`: compile the template as a user would get it
+- `just assets`: generate `thumbnail.png` and `showcase.pdf`
+- `just package @preview`: install the working copy locally (or pass a directory)
+
+To release: bump the version in `package/typst.toml`, the template import, the README and the CHANGELOG, then push a `vX.Y.Z` tag. The release workflow builds the package and pushes it to a branch of [the typst/packages fork](https://github.com/stanlrt/typst-packages-fork) based on the current upstream, then opens the pull request (or prints a link to open it).
 
 ---
 

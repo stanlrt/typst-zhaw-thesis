@@ -1,0 +1,89 @@
+name: Release to Typst Universe
+on:
+  push:
+    tags: ["v*"]
+
+env:
+  # Fork of typst/packages that REGISTRY_TOKEN can push to.
+  FORK: stanlrt/typst-packages-fork
+  UPSTREAM: typst/packages
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - uses: typst-community/setup-typst@v4
+        with:
+          typst-version: latest
+
+      - name: Check versions
+        run: just check "$GITHUB_REF_NAME"
+
+      - name: Build package
+        run: |
+          . scripts/common
+          echo "NAME=$NAME" >> "$GITHUB_ENV"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          just package out
+
+      # The branch is based on the current upstream main, so the PR only
+      # contains this version's directory. Creating the ref server-side means
+      # the push below only uploads the new files.
+      - name: Prepare branch on fork
+        env:
+          GH_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+        run: |
+          BRANCH="$NAME-$VERSION"
+          UP_SHA="$(gh api "repos/$UPSTREAM/commits/main" --jq .sha)"
+          if gh api "repos/$FORK/git/ref/heads/$BRANCH" >/dev/null 2>&1; then
+            gh api -X PATCH "repos/$FORK/git/refs/heads/$BRANCH" -f sha="$UP_SHA" -F force=true >/dev/null
+          else
+            gh api "repos/$FORK/git/refs" -f ref="refs/heads/$BRANCH" -f sha="$UP_SHA" >/dev/null
+          fi
+          echo "BRANCH=$BRANCH" >> "$GITHUB_ENV"
+
+      # Sparse, treeless clone: never checks out the whole package index.
+      - name: Commit and push package
+        env:
+          TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+        run: |
+          git clone --depth 1 --filter=tree:0 --no-checkout --branch "$BRANCH" \
+            "https://x-access-token:${TOKEN}@github.com/${FORK}.git" registry
+          cd registry
+          git sparse-checkout set "packages/preview/$NAME"
+          git checkout
+          mkdir -p "packages/preview/$NAME"
+          cp -r "../out/$NAME/$VERSION" "packages/preview/$NAME/"
+          git config user.name "$(git -C .. log -1 --format=%an)"
+          git config user.email "$(git -C .. log -1 --format=%ae)"
+          git add "packages/preview/$NAME/$VERSION"
+          git commit -m "$NAME:$VERSION"
+          git push origin "$BRANCH"
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+        run: |
+          OWNER="${FORK%%/*}"
+          if [[ -n "$(gh pr list -R "$UPSTREAM" --head "$BRANCH" --state open --json number --jq '.[].number')" ]]; then
+            echo "PR already open; the push above updated it."
+            exit 0
+          fi
+          {
+            echo "I am submitting"
+            echo "- [ ] a new package"
+            echo "- [x] an update for a package"
+            echo
+            echo "Description: Update of the ZHAW thesis template. Changes:"
+            echo
+            awk -v v="## $VERSION" '$0==v{f=1;next} /^## /{f=0} f' package/CHANGELOG.md
+          } > pr-body.md
+          gh pr create -R "$UPSTREAM" --head "$OWNER:$BRANCH" --base main \
+            --title "$NAME:$VERSION" --body-file pr-body.md \
+          || echo "::warning::Could not open the PR (token scope?). Open it manually: https://github.com/$UPSTREAM/compare/main...$OWNER:$BRANCH"

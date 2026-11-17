@@ -1,0 +1,36 @@
+# Source this file. Defines shared paths and package metadata.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+PKG_DIR="$ROOT/package"
+FONTS_DIR="$ROOT/fonts"
+BUILD_DIR="$ROOT/.build"
+
+read_toml() {
+  # Reads `key = "value"` from the [package] table of typst.toml.
+  sed -n "s/^$1 *= *\"\(.*\)\"/\1/p" "$PKG_DIR/typst.toml" | head -n1
+}
+
+NAME="$(read_toml name)"
+VERSION="$(read_toml version)"
+MIN_COMPILER="$(read_toml compiler)"
+
+# Exposes the working copy as @preview/$NAME:$VERSION through a private
+# package path, so the template's real import is used without installing.
+stage_package() {
+  rm -rf "$BUILD_DIR/packages"
+  mkdir -p "$BUILD_DIR/packages/preview/$NAME"
+  ln -s "$PKG_DIR" "$BUILD_DIR/packages/preview/$NAME/$VERSION"
+}
+
+# Compiles the template as a user would get it from `typst init`.
+# Usage: compile_template <output> [extra typst args...]
+compile_template() {
+  local out="$1"; shift
+  stage_package
+  rm -rf "$BUILD_DIR/template"
+  cp -r "$PKG_DIR/template" "$BUILD_DIR/template"
+  typst compile "$BUILD_DIR/template/main.typ" "$out" \
+    --font-path "$FONTS_DIR" --ignore-system-fonts \
+    --package-path "$BUILD_DIR/packages" "$@"
+}

@@ -1,0 +1,51 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: Template compiles on Typst ${{ matrix.typst }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # "minimum" is read from package/typst.toml (the `compiler` key).
+        typst: [minimum, latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - name: Resolve Typst version
+        id: version
+        run: |
+          if [[ "${{ matrix.typst }}" == minimum ]]; then
+            echo "typst=$(sed -n 's/^compiler *= *"\(.*\)"/\1/p' package/typst.toml)" >> "$GITHUB_OUTPUT"
+          else
+            echo "typst=latest" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: typst-community/setup-typst@v4
+        with:
+          typst-version: ${{ steps.version.outputs.typst }}
+
+      - name: Check versions
+        run: just check
+
+      - name: Compile template
+        run: just test
+
+      - name: Generate assets
+        run: just assets
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: preview-typst-${{ matrix.typst }}
+          path: |
+            package/thumbnail.png
+            package/showcase.pdf
+          retention-days: 14

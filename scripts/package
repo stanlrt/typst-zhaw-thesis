@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Copies the package into <target>/<name>/<version>.
+# <target> may be @local or @preview to install into the local Typst data dir.
+. "$(dirname "${BASH_SOURCE[0]}")/common"
+
+target="${1:?usage: package <dir|@local|@preview>}"
+case "$target" in
+  @local|@preview)
+    data="${XDG_DATA_HOME:-$HOME/.local/share}"
+    [[ "$OSTYPE" == darwin* ]] && data="$HOME/Library/Application Support"
+    target="$data/typst/packages/${target#@}" ;;
+esac
+
+for f in thumbnail.png showcase.pdf; do
+  [[ -f "$PKG_DIR/$f" ]] || { echo "error: package/$f missing, run 'just assets'" >&2; exit 1; }
+done
+
+dest="$target/$NAME/$VERSION"
+rm -rf "$dest"
+mkdir -p "$dest"
+cp -r "$PKG_DIR"/. "$dest"/
+echo "packaged to $dest"

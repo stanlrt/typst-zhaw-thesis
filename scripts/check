@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Checks that version numbers agree across the package. Optional argument:
+# a release tag (e.g. v0.5.0) that must match typst.toml.
+. "$(dirname "${BASH_SOURCE[0]}")/common"
+
+fail=0
+err() { echo "error: $*" >&2; fail=1; }
+
+if [[ -n "${1:-}" && "$1" != "v$VERSION" ]]; then
+  err "tag $1 does not match typst.toml version $VERSION"
+fi
+
+grep -q "^#import \"@preview/$NAME:$VERSION\"" "$PKG_DIR/template/main.typ" \
+  || err "template/main.typ must import @preview/$NAME:$VERSION"
+
+stale="$(grep -rhoE "@preview/$NAME:[0-9]+\.[0-9]+\.[0-9]+" "$PKG_DIR/README.md" "$PKG_DIR/template" \
+  | grep -v ":$VERSION\$" | sort -u || true)"
+[[ -z "$stale" ]] || err "outdated imports in README/template: $stale"
+
+grep -q "version=$VERSION" "$PKG_DIR/README.md" \
+  || err "README web-app link must use version=$VERSION"
+
+grep -q "^## $VERSION\$" "$PKG_DIR/CHANGELOG.md" \
+  || err "CHANGELOG.md has no '## $VERSION' section"
+
+[[ $fail == 0 ]] && echo "checks passed for $NAME:$VERSION"
+exit $fail
