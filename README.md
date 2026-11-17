@@ -22,11 +22,13 @@ This repository holds the template's source code (in [`package/`](package)), the
 Requires [Typst](https://typst.app/open-source/) and [just](https://github.com/casey/just).
 
 - `just check`: check that version numbers agree across the package
+- `just check-deps`: warn about dependencies with a newer version on Typst Universe
 - `just test`: compile the template as a user would get it
 - `just assets`: generate `thumbnail.png` and `showcase.pdf`
 - `just package @preview`: install the working copy locally (or pass a directory)
+- `just release`: publish the version in `package/typst.toml`
 
-To release: bump the version in `package/typst.toml`, the template import, the README and the CHANGELOG, then push a `vX.Y.Z` tag. The release workflow builds the package and pushes it to a branch of [the typst/packages fork](https://github.com/stanlrt/typst-packages-fork) based on the current upstream, then opens the pull request (or prints a link to open it).
+To release: bump the version in `package/typst.toml`, the template import, the README and the CHANGELOG, push to `main`, then run `just release`. The release workflow builds the package, pushes it to a branch of [the typst/packages fork](https://github.com/stanlrt/typst-packages-fork) based on the current upstream, opens the pull request (or prints a link to open it) and tags the commit `vX.Y.Z`. To fix something during review, push the fix to `main` and run `just release` again: it updates the open pull request.
 
 ---
 

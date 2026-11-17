@@ -14,7 +14,7 @@ jobs:
         # "minimum" is read from package/typst.toml (the `compiler` key).
         typst: [minimum, latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: taiki-e/install-action@v2
         with:
@@ -29,7 +29,7 @@ jobs:
             echo "typst=latest" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: typst-community/setup-typst@v4
+      - uses: typst-community/setup-typst@v5
         with:
           typst-version: ${{ steps.version.outputs.typst }}
 
@@ -39,10 +39,16 @@ jobs:
       - name: Compile template
         run: just test
 
+      - name: Check for outdated dependencies
+        if: matrix.typst == 'latest'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: just check-deps
+
       - name: Generate assets
         run: just assets
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: preview-typst-${{ matrix.typst }}
           path: |

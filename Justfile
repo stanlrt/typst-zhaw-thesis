@@ -17,3 +17,11 @@ assets:
 # copy the package into a directory, or @local / @preview to install it locally
 package target: assets
   ./scripts/package "{{target}}"
+
+# warn about dependencies with a newer version on Typst Universe
+check-deps:
+  ./scripts/check-deps
+
+# release the version in package/typst.toml (run again to update the open PR)
+release:
+  ./scripts/release

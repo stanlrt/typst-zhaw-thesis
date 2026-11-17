@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Starts the release workflow for the version in package/typst.toml.
+# Running it again for the same version updates the open pull request.
+. "$(dirname "${BASH_SOURCE[0]}")/common"
+cd "$ROOT"
+
+[[ -z "$(git status --porcelain)" ]] || { echo "error: commit or stash your changes first" >&2; exit 1; }
+git fetch -q origin main
+[[ "$(git rev-parse HEAD)" == "$(git rev-parse origin/main)" ]] \
+  || { echo "error: push your commits to origin/main first (HEAD must equal origin/main)" >&2; exit 1; }
+
+./scripts/check
+echo "Releasing $NAME:$VERSION from $(git rev-parse --short HEAD)..."
+gh workflow run release.yml --ref main
+sleep 5
+run="$(gh run list --workflow release.yml --limit 1 --json databaseId --jq '.[0].databaseId')"
+gh run watch "$run" --exit-status

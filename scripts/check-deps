@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Warns about @preview dependencies that have a newer version on Typst Universe.
+# Uses the GitHub API through `gh` (set GH_TOKEN in CI).
+. "$(dirname "${BASH_SOURCE[0]}")/common"
+
+outdated=0
+while read -r dep; do
+  name="${dep%%:*}"; used="${dep#*:}"
+  latest="$(gh api "repos/typst/packages/contents/packages/preview/$name" --jq '.[].name' | sort -V | tail -n1)"
+  if [[ "$used" != "$latest" ]]; then
+    msg="$name $used is outdated, latest is $latest"
+    if [[ -n "${GITHUB_ACTIONS:-}" ]]; then echo "::warning::$msg"; else echo "warning: $msg"; fi
+    outdated=1
+  fi
+done < <(grep -rhoE "@preview/[a-z0-9-]+:[0-9]+\.[0-9]+\.[0-9]+" "$PKG_DIR/src" "$PKG_DIR/lib.typ" \
+  | sed 's|@preview/||' | grep -v "^$NAME:" | sort -u)
+
+[[ $outdated == 0 ]] && echo "all dependencies are up to date"
+exit 0
